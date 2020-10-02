@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "207073967417",
+    "firebase_url": "https://ardak-4076b.firebaseio.com",
+    "project_id": "ardak-4076b",
+    "storage_bucket": "ardak-4076b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207073967417:android:f2988cdc827d8403353ce8",
+        "android_client_info": {
+          "package_name": "com.midooabdaim.ardak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207073967417-ak8sm0mfadvje8viivpplj99r8isuvd5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.midooabdaim.ardak",
+            "certificate_hash": "409e5eb4dce6d3e49d8ad8e536f3bfd151040b6d"
+          }
+        },
+        {
+          "client_id": "207073967417-v3ptdr81ouiv76oe2jt5vd3ren301m68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0S9D-r79uheh4v8052xHMQlbBl7owgVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207073967417-v3ptdr81ouiv76oe2jt5vd3ren301m68.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
