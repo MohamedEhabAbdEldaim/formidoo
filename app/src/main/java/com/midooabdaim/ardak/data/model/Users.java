@@ -7,6 +7,9 @@ public class Users {
     String Phone;
     String id;
 
+    public Users() {
+    }
+
     public Users(String name, String email, String photo, String phone, String id) {
         Name = name;
         Email = email;

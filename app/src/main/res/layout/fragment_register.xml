@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:drawableStart="@drawable/ic_baseline_phone_24"
-            android:hint="@string/email"
+            android:hint="@string/phone"
             android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout

@@ -27,6 +27,7 @@ import butterknife.Unbinder;
 
 import static com.midooabdaim.ardak.helper.HelperMethod.cleanError;
 import static com.midooabdaim.ardak.helper.HelperMethod.customToast;
+import static com.midooabdaim.ardak.helper.HelperMethod.disappearKeypad;
 import static com.midooabdaim.ardak.helper.HelperMethod.dismissProgressDialog;
 import static com.midooabdaim.ardak.helper.HelperMethod.replaceFragment;
 import static com.midooabdaim.ardak.helper.HelperMethod.showProgressDialog;
@@ -58,11 +59,13 @@ public class LoginFragment extends BaseFragment {
         initView();
         return view;
     }
+
     private void initView() {
         auth = FirebaseAuth.getInstance();
         textInputLayoutsList.add(fragmentLoginTxtInputEmail);
         textInputLayoutsList.add(fragmentLoginTxtInputPassword);
     }
+
     @Override
     public void onDestroy() {
         unbinder.unbind();
@@ -71,11 +74,12 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public void backPressed() {
-        super.backPressed();
+        getActivity().finish();
     }
 
     @OnClick({R.id.fragment_login_text_view_forget_pass, R.id.fragment_login_btn_login, R.id.fragment_login_text_view_create_account})
     public void onViewClicked(View view) {
+        disappearKeypad(getActivity(), view);
         switch (view.getId()) {
             case R.id.fragment_login_text_view_forget_pass:
                 break;
@@ -94,7 +98,7 @@ public class LoginFragment extends BaseFragment {
             if (!isActive(getActivity())) {
                 customToast(getActivity(), getString(R.string.nointernet), true);
                 return;
-            } else{
+            } else {
                 cleanError(textInputLayoutsList);
                 String email = fragmentLoginTxtInputEmail.getEditText().getText().toString().trim();
                 String password = fragmentLoginTxtInputPassword.getEditText().getText().toString().trim();
@@ -128,5 +132,6 @@ public class LoginFragment extends BaseFragment {
                 });
 
     }
+
 
 }

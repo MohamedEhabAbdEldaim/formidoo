@@ -16,6 +16,7 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -27,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.midooabdaim.ardak.R;
 import com.midooabdaim.ardak.data.model.Users;
 import com.midooabdaim.ardak.ui.activity.HomeActivity;
+import com.midooabdaim.ardak.ui.activity.MainActivity;
 import com.midooabdaim.ardak.ui.fragment.BaseFragment;
 
 import java.util.ArrayList;
@@ -64,7 +66,6 @@ public class RegisterFragment extends BaseFragment {
     TextInputLayout fragmentRegisterTxtInputConfirmPassword;
     private List<TextInputLayout> textInputLayoutsList = new ArrayList<>();
     private FirebaseAuth auth;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
 
     public RegisterFragment() {
@@ -141,51 +142,60 @@ public class RegisterFragment extends BaseFragment {
                 fragmentRegisterTxtInputConfirmPassword.setError(getString(R.string.notmatch));
                 return;
             }
-            customToast(getActivity(), getString(R.string.virivi), false);
-            addToDataBase(username, email, phone, password);
+           // customToast(getActivity(), getString(R.string.virivi), false);
+            addToDataBase2(username, email, phone, password);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+/*
     private void addToDataBase(String username, String email, String phone, String password) {
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuthSettings firebaseAuthSettings = firebaseAuth.getFirebaseAuthSettings();
+
+// Configure faking the auto-retrieval with the whitelisted numbers.
+        firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber("+201090017688", "123456");
+
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phone,        // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 getActivity(),               // Activity (for callback binding)
-                mCallbacks);
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    */
+/*@Override
+                    public void onCodeSent(String verificationId,
+                                           PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                        // Save the verification id somewhere
+                        // ...
 
-        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        // The corresponding whitelisted code above should be used to complete sign-in.
 
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential credential) {
-                addToDataBase2(username, email, password, phone);
-            }
-
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-                // This callback is invoked in an invalid request for verification is made,
-                // for instance if the the phone number format is not valid.
-
-
-                if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    // Invalid request
-                    // ...
-                } else if (e instanceof FirebaseTooManyRequestsException) {
-                    // The SMS quota for the project has been exceeded
-                    // ...
-                }
+                    }
+*//*
 
 
-            }
+
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        addToDataBase2(username, email, password, phone);
+
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+
+                    }
+                });
 
 
-        };
     }
+*/
 
-    private void addToDataBase2(String username, String email, String password, String phone) {
+    private void addToDataBase2(String username, String email, String phone, String password) {
         try {
             showProgressDialog(getActivity(), getString(R.string.wait));
             auth.createUserWithEmailAndPassword(email, password)
