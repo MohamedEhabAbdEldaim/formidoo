@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -20,8 +21,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,11 +37,13 @@ import com.midooabdaim.ardak.R;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -226,4 +231,65 @@ public class HelperMethod {
         return new String(formArray, "UTF-8");
     }
 
+    public static void showTimePicker(Context context, String title, final TextView text_view_time, final TimeTXT timeTXT, SwitchCompat switchCompat) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context, AlertDialog.THEME_HOLO_DARK, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+                DecimalFormat mFormat = new DecimalFormat("00", symbols);
+                String time;
+                if (hourOfDay > 12) {
+                    time = mFormat.format(Double.valueOf(hourOfDay - 12)) + ":" + mFormat.format(Double.valueOf(minute)) + " PM";
+                    timeTXT.setHours(mFormat.format(Double.valueOf(hourOfDay - 12)));
+                } else {
+                    time = mFormat.format(Double.valueOf(hourOfDay)) + ":" + mFormat.format(Double.valueOf(minute)) + " AM";
+                    timeTXT.setHours(mFormat.format(Double.valueOf(hourOfDay)));
+                }
+                timeTXT.setTime_txt(time);
+                timeTXT.setMint(mFormat.format(Double.valueOf(minute)));
+                text_view_time.setText(time);
+                switchCompat.setChecked(true);
+            }
+        }, Integer.parseInt(timeTXT.getHours()), Integer.parseInt(timeTXT.getMint()), false);
+        timePickerDialog.setTitle(title);
+        timePickerDialog.show();
+    }
+
+    public static Date convertDateString(String time) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
+
+            Date parse = format.parse(time);
+
+            return parse;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static TimeTXT convertStringToDateTxtModel(String date) {
+        try {
+            Date date1 = convertDateString(date);
+            String hour = (String) DateFormat.format("hh", date1); // 05
+            String mint = (String) DateFormat.format("mm", date1); // 23
+            //     String sbahormasa = (String) DateFormat.format("a", date1);//AM
+
+            return new TimeTXT(hour, mint, date);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+    public static boolean isSameTime(TimeTXT cal1, TimeTXT cal2) {
+        if (cal1 == null || cal2 == null) {
+            return false;
+        }
+
+        return (cal1.getHours().equals(cal2.getHours()) &&
+                cal1.getMint().equals(cal2.getMint()));
+    }
 }

@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.midooabdaim.ardak.R;
+import com.midooabdaim.ardak.ui.fragment.SplashFragment;
 import com.midooabdaim.ardak.ui.fragment.userCycle.LoginFragment;
 import com.midooabdaim.ardak.ui.fragment.userCycle.RegisterFragment;
+
+import butterknife.ButterKnife;
 
 import static com.midooabdaim.ardak.helper.HelperMethod.replaceFragment;
 
@@ -16,7 +19,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        replaceFragment(getSupportFragmentManager(), R.id.main_activity_fl_id, new LoginFragment());
-
+        replaceFragment(getSupportFragmentManager(), R.id.main_activity_fl_id, new SplashFragment());
     }
 }

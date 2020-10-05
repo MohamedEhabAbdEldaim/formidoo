@@ -22,4 +22,6 @@
     <string name="createdaccount">created account</string>
     <string name="welcome">welcome back</string>
     <string name="phone">phone</string>
+    <string name="roman">Roman</string>
+    <string name="gawafa">gawafa</string>
 </resources>
