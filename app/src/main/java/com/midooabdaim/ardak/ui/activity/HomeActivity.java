@@ -69,9 +69,9 @@ public class HomeActivity extends BaseActivity {
                         int minute = instance.get(Calendar.MINUTE);
                         TimeTXT txt;
                         if (hour > 12) {
-                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour - 12))+ ":" + mFormat.format(Double.valueOf(minute)) + " PM");
+                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour - 12)) + ":" + mFormat.format(Double.valueOf(minute)) + " PM");
                         } else {
-                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour))+ ":" + mFormat.format(Double.valueOf(minute)) + " AM");
+                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour)) + ":" + mFormat.format(Double.valueOf(minute)) + " AM");
                         }
                         if (isSameTime(txt, convertStringToDateTxtModel(homeActivityTxtGawafaaTime.getText().toString().trim()))) {
                             homeActivitySwGawafaa.setChecked(false);
@@ -81,6 +81,9 @@ public class HomeActivity extends BaseActivity {
                 };
 
                 if (isChecked) {
+                    if (homeActivityTxtGawafaaTime.getText().toString().trim().equals("00:00")) {
+                        HelperMethod.showTimePicker(HomeActivity.this, getString(R.string.gawafa), homeActivityTxtGawafaaTime, currentTime, homeActivitySwGawafaa);
+                    }
                     handler.postDelayed(runnable, delay);
                 } else {
                     handler.removeCallbacks(runnable);
@@ -102,9 +105,9 @@ public class HomeActivity extends BaseActivity {
 
                         TimeTXT txt;
                         if (hour > 12) {
-                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour - 12))+ ":" + mFormat.format(Double.valueOf(minute)) + " PM");
+                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour - 12)) + ":" + mFormat.format(Double.valueOf(minute)) + " PM");
                         } else {
-                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour))+ ":" + mFormat.format(Double.valueOf(minute)) + " AM");
+                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour)) + ":" + mFormat.format(Double.valueOf(minute)) + " AM");
                         }
                         if (isSameTime(txt, convertStringToDateTxtModel(homeActivityTxtRomanTime.getText().toString().trim()))) {
                             homeActivitySwRoman.setChecked(false);
@@ -114,6 +117,9 @@ public class HomeActivity extends BaseActivity {
                 };
 
                 if (isChecked) {
+                    if (homeActivityTxtRomanTime.getText().toString().trim().equals("00:00")) {
+                        HelperMethod.showTimePicker(HomeActivity.this, getString(R.string.roman), homeActivityTxtRomanTime, currentTime, homeActivitySwRoman);
+                    }
                     handler.postDelayed(runnable, delay);
                 } else {
                     handler.removeCallbacks(runnable);
@@ -136,7 +142,6 @@ public class HomeActivity extends BaseActivity {
                 break;
             case R.id.home_activity_txt_roman_time:
                 HelperMethod.showTimePicker(this, getString(R.string.roman), homeActivityTxtRomanTime, currentTime, homeActivitySwRoman);
-
                 break;
         }
     }
