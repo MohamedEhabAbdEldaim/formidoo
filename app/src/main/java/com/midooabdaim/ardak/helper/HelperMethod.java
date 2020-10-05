@@ -290,6 +290,7 @@ public class HelperMethod {
         }
 
         return (cal1.getHours().equals(cal2.getHours()) &&
-                cal1.getMint().equals(cal2.getMint()));
+                cal1.getMint().equals(cal2.getMint()) &&
+                cal1.getTime_txt().equals(cal2.getTime_txt()));
     }
 }
