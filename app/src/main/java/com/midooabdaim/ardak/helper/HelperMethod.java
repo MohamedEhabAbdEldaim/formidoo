@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Handler;
 import android.text.Html;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.midooabdaim.ardak.R;
+import com.midooabdaim.ardak.ui.activity.HomeActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -293,4 +296,47 @@ public class HelperMethod {
                 cal1.getMint().equals(cal2.getMint()) &&
                 cal1.getTime_txt().equals(cal2.getTime_txt()));
     }
+
+    public static void switchCheckedChanged(SwitchCompat compat, TextView textView, Context context, String title, final TimeTXT timeTXT) {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat mFormat = new DecimalFormat("00", symbols);
+        compat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                Handler handler = new Handler();
+                int delay = 5000; //milliseconds
+                final Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        Calendar instance = Calendar.getInstance();
+                        int hour = instance.get(Calendar.HOUR_OF_DAY);
+                        int minute = instance.get(Calendar.MINUTE);
+                        TimeTXT txt;
+                        if (hour > 12) {
+                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour - 12)) + ":" + mFormat.format(Double.valueOf(minute)) + " PM");
+                        } else {
+                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour)) + ":" + mFormat.format(Double.valueOf(minute)) + " AM");
+                        }
+                        if (isSameTime(txt, convertStringToDateTxtModel(textView.getText().toString().trim()))) {
+                            compat.setChecked(false);
+                        }
+                        handler.postDelayed(this::run, delay);
+                    }
+                };
+
+                if (isChecked) {
+                    if (textView.getText().toString().trim().equals("00:00")) {
+                        HelperMethod.showTimePicker(context, title, textView, timeTXT, compat);
+                    }
+                    handler.postDelayed(runnable, delay);
+                } else {
+                    handler.removeCallbacks(runnable);
+                    textView.setText("00:00");
+                }
+            }
+        });
+    }
+
+
 }

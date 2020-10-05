@@ -24,6 +24,7 @@ import butterknife.OnClick;
 
 import static com.midooabdaim.ardak.helper.HelperMethod.convertStringToDateTxtModel;
 import static com.midooabdaim.ardak.helper.HelperMethod.isSameTime;
+import static com.midooabdaim.ardak.helper.HelperMethod.switchCheckedChanged;
 
 public class HomeActivity extends BaseActivity {
 
@@ -53,80 +54,8 @@ public class HomeActivity extends BaseActivity {
         currentTime = new TimeTXT(String.valueOf(hour), String.valueOf(minute), hour + ":" + minute);
         homeActivityTxtGawafaaTime.setText("00:00");
         homeActivityTxtRomanTime.setText("00:00");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        DecimalFormat mFormat = new DecimalFormat("00", symbols);
-
-        homeActivitySwGawafaa.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Handler handler = new Handler();
-                int delay = 5000; //milliseconds
-                final Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        Calendar instance = Calendar.getInstance();
-                        int hour = instance.get(Calendar.HOUR_OF_DAY);
-                        int minute = instance.get(Calendar.MINUTE);
-                        TimeTXT txt;
-                        if (hour > 12) {
-                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour - 12)) + ":" + mFormat.format(Double.valueOf(minute)) + " PM");
-                        } else {
-                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour)) + ":" + mFormat.format(Double.valueOf(minute)) + " AM");
-                        }
-                        if (isSameTime(txt, convertStringToDateTxtModel(homeActivityTxtGawafaaTime.getText().toString().trim()))) {
-                            homeActivitySwGawafaa.setChecked(false);
-                        }
-                        handler.postDelayed(this::run, delay);
-                    }
-                };
-
-                if (isChecked) {
-                    if (homeActivityTxtGawafaaTime.getText().toString().trim().equals("00:00")) {
-                        HelperMethod.showTimePicker(HomeActivity.this, getString(R.string.gawafa), homeActivityTxtGawafaaTime, currentTime, homeActivitySwGawafaa);
-                    }
-                    handler.postDelayed(runnable, delay);
-                } else {
-                    handler.removeCallbacks(runnable);
-                    homeActivityTxtGawafaaTime.setText("00:00");
-                }
-            }
-        });
-        homeActivitySwRoman.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Handler handler = new Handler();
-                int delay = 5000; //milliseconds
-                final Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        Calendar instance = Calendar.getInstance();
-                        int hour = instance.get(Calendar.HOUR_OF_DAY);
-                        int minute = instance.get(Calendar.MINUTE);
-
-                        TimeTXT txt;
-                        if (hour > 12) {
-                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour - 12)) + ":" + mFormat.format(Double.valueOf(minute)) + " PM");
-                        } else {
-                            txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour)) + ":" + mFormat.format(Double.valueOf(minute)) + " AM");
-                        }
-                        if (isSameTime(txt, convertStringToDateTxtModel(homeActivityTxtRomanTime.getText().toString().trim()))) {
-                            homeActivitySwRoman.setChecked(false);
-                        }
-                        handler.postDelayed(this::run, delay);
-                    }
-                };
-
-                if (isChecked) {
-                    if (homeActivityTxtRomanTime.getText().toString().trim().equals("00:00")) {
-                        HelperMethod.showTimePicker(HomeActivity.this, getString(R.string.roman), homeActivityTxtRomanTime, currentTime, homeActivitySwRoman);
-                    }
-                    handler.postDelayed(runnable, delay);
-                } else {
-                    handler.removeCallbacks(runnable);
-                    homeActivityTxtRomanTime.setText("00:00");
-                }
-            }
-        });
+        switchCheckedChanged(homeActivitySwGawafaa, homeActivityTxtGawafaaTime, this, getString(R.string.gawafa), currentTime);
+        switchCheckedChanged(homeActivitySwRoman, homeActivityTxtRomanTime, this, getString(R.string.roman), currentTime);
     }
 
     @Override
