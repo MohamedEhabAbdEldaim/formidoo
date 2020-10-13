@@ -24,4 +24,12 @@
     <string name="phone">phone</string>
     <string name="roman">Roman</string>
     <string name="gawafa">gawafa</string>
+    <string name="default_notification_channel_id">midoo</string>
+    <string name="isopen">switch is open</string>
+    <string name="choose">choose</string>
+    <string name="gawafafrom">gawafa from</string>
+    <string name="gawafato">gawafato</string>
+    <string name="romanfrom">romanfrom</string>
+    <string name="romanto">romanto</string>
+    <string name="isclosed">switch is closed</string>
 </resources>

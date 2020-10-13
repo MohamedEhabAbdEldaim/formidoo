@@ -55,6 +55,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import static android.text.format.DateFormat.is24HourFormat;
 import static com.google.android.gms.common.util.Base64Utils.decode;
 import static com.google.android.gms.common.util.Base64Utils.encode;
 
@@ -225,15 +226,6 @@ public class HelperMethod {
         return null;
     }
 
-    public static String AssetJSONFile(String filename, Context context) throws IOException {
-        AssetManager manager = context.getAssets();
-        InputStream file = manager.open(filename);
-        byte[] formArray = new byte[file.available()];
-        file.read(formArray);
-        file.close();
-        return new String(formArray, "UTF-8");
-    }
-
     public static void showTimePicker(Context context, String title, final TextView text_view_time, final TimeTXT timeTXT, SwitchCompat switchCompat) {
         TimePickerDialog timePickerDialog = new TimePickerDialog(context, AlertDialog.THEME_HOLO_DARK, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -252,13 +244,16 @@ public class HelperMethod {
                 timeTXT.setMint(mFormat.format(Double.valueOf(minute)));
                 text_view_time.setText(time);
                 switchCompat.setChecked(true);
+
             }
-        }, Integer.parseInt(timeTXT.getHours()), Integer.parseInt(timeTXT.getMint()), false);
+        }, Integer.parseInt(timeTXT.getHours()), Integer.parseInt(timeTXT.getMint()), is24HourFormat(context));
         timePickerDialog.setTitle(title);
         timePickerDialog.show();
+        timePickerDialog.setCanceledOnTouchOutside(false);
+
     }
 
-    public static Date convertDateString(String time) {
+    public static Date convertDateStringTime(String time) {
         try {
             SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
 
@@ -272,9 +267,9 @@ public class HelperMethod {
         }
     }
 
-    public static TimeTXT convertStringToDateTxtModel(String date) {
+    public static TimeTXT convertStringToDateTxtModelTime(String date) {
         try {
-            Date date1 = convertDateString(date);
+            Date date1 = convertDateStringTime(date);
             String hour = (String) DateFormat.format("hh", date1); // 05
             String mint = (String) DateFormat.format("mm", date1); // 23
             //     String sbahormasa = (String) DateFormat.format("a", date1);//AM
@@ -285,7 +280,6 @@ public class HelperMethod {
             return null;
         }
     }
-
 
     public static boolean isSameTime(TimeTXT cal1, TimeTXT cal2) {
         if (cal1 == null || cal2 == null) {
@@ -318,7 +312,7 @@ public class HelperMethod {
                         } else {
                             txt = new TimeTXT(String.valueOf(mFormat.format(Double.valueOf(hour - 12))), String.valueOf(mFormat.format(Double.valueOf(minute))), mFormat.format(Double.valueOf(hour)) + ":" + mFormat.format(Double.valueOf(minute)) + " AM");
                         }
-                        if (isSameTime(txt, convertStringToDateTxtModel(textView.getText().toString().trim()))) {
+                        if (isSameTime(txt, convertStringToDateTxtModelTime(textView.getText().toString().trim()))) {
                             compat.setChecked(false);
                         }
                         handler.postDelayed(this::run, delay);
@@ -327,7 +321,7 @@ public class HelperMethod {
 
                 if (isChecked) {
                     if (textView.getText().toString().trim().equals("00:00")) {
-                        HelperMethod.showTimePicker(context, title, textView, timeTXT, compat);
+                        showTimePicker(context, title, textView, timeTXT, compat);
                     }
                     handler.postDelayed(runnable, delay);
                 } else {
